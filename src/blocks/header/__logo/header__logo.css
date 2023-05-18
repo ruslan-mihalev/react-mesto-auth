@@ -1,0 +1,18 @@
+.header__logo {
+  max-width: 104px;
+  height: 24px;
+  margin-left: min(max(calc(var(--min-header-content-horizontal-padding) - (100vw - var(--min-screen-width)) / 2), 0px), var(--min-header-content-horizontal-padding));
+  padding: 0;
+  background-image: url(../../../images/logo.svg);
+  background-position: center;
+  background-size: cover;
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 880px) {
+  .header__logo {
+    max-width: 142px;
+    height: 33px;
+    margin-left: 0;
+  }
+}
