@@ -1,7 +1,8 @@
+import {useState, useEffect} from 'react';
+import {Route, Routes, Navigate, useNavigate} from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import {useState, useEffect} from 'react';
 import ImagePopup from "./ImagePopup";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import api from '../utils/api';
@@ -9,9 +10,13 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmationPopup from "./ConfirmationPopup";
+import Register from "./Register";
+import Login from "./Login";
+import ProtectedRouter from "./ProtectedRouter";
 
 function App() {
 
+  const [email, setEmail] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
   const [cards, setCards] = useState([]);
 
@@ -132,30 +137,52 @@ function App() {
       });
   }
 
+  function onLogin(jwt) {
+    localStorage.setItem('jwt', jwt);
+  }
+
+  function onSignOut() {
+    localStorage.removeItem('jwt');
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header/>
-        {
-          // Таким образом мы оборабатываем неопределенное состояние отсутствия пользователя
-          currentUser ? (<Main onEditAvatar={handleEditAvatarClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              cards={cards}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}/>) : null
-        }
+        <Routes>
+          <Route path="/" element={
+            <ProtectedRouter element={Main}
+                             isLoggedIn={false}
+                             onEditAvatar={handleEditAvatarClick}
+                             onEditProfile={handleEditProfileClick}
+                             onAddPlace={handleAddPlaceClick}
+                             cards={cards}
+                             onCardClick={handleCardClick}
+                             onCardLike={handleCardLike}
+                             onCardDelete={handleCardDelete}/>
+          }/>
+          <Route path="/sign-up" element={
+            <Register/>
+          }/>
+          <Route path="/sign-in" element={
+            <Login/>
+          }/>
+        </Routes>
+
         <Footer/>
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} isLoading={isLoading} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} isLoading={isLoading} onClose={closeAllPopups}
+                          onUpdateUser={handleUpdateUser}/>
 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} isLoading={isLoading} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} isLoading={isLoading} onClose={closeAllPopups}
+                       onAddPlace={handleAddPlaceSubmit}/>
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} isLoading={isLoading} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} isLoading={isLoading} onClose={closeAllPopups}
+                         onUpdateAvatar={handleUpdateAvatar}/>
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
-        <ConfirmationPopup card={cardToDelete} isLoading={isLoading} onClose={closeAllPopups} onConfirmCardDelete={handleConfirmCardDelete} />
+        <ConfirmationPopup card={cardToDelete} isLoading={isLoading} onClose={closeAllPopups}
+                           onConfirmCardDelete={handleConfirmCardDelete}/>
       </div>
     </CurrentUserContext.Provider>
   );
