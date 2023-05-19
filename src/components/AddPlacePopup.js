@@ -29,17 +29,17 @@ function AddPlacePopup({isOpen, isLoading, onClose, onAddPlace}) {
     <PopupWithForm name='card' title='Новое место' submitButtonText={submitButtonText}
                    isSubmitButtonEnabled={!isLoading} isOpen={isOpen}
                    onClose={onClose} onSubmit={handleSubmit}>
-      <input className="popup__input popup__input_target_name" id="input-card-name" name="name"
+      <input className="form__input form__input_target_name" id="input-card-name" name="name"
              required
              type="text" minLength={2} maxLength={30} placeholder="Название"
              value={values.name} onChange={handleChange}/>
-      <span className="popup__input-error popup__input-error_target_name input-card-name-error"/>
+      <span className="form__input-error form__input-error_target_name input-card-name-error"/>
 
-      <input className="popup__input popup__input_target_info" id="input-card-image-link"
+      <input className="form__input form__input_target_info" id="input-card-image-link"
              name="link"
              required type="url" placeholder="Ссылка на картинку"
              value={values.link} onChange={handleChange}/>
-      <span className="popup__input-error popup__input-error_target_info input-card-image-link-error"/>
+      <span className="form__input-error form__input-error_target_info input-card-image-link-error"/>
     </PopupWithForm>
   );
 }

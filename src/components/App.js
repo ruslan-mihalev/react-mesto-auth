@@ -24,7 +24,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(true);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
 
@@ -155,7 +155,7 @@ function App() {
         <Routes>
           <Route path="/" element={
             <ProtectedRouter element={Main}
-                             isLoggedIn={false}
+                             isLoggedIn={true}
                              onEditAvatar={handleEditAvatarClick}
                              onEditProfile={handleEditProfileClick}
                              onAddPlace={handleAddPlaceClick}
@@ -187,7 +187,7 @@ function App() {
         <ConfirmationPopup card={cardToDelete} isLoading={isLoading} onClose={closeAllPopups}
                            onConfirmCardDelete={handleConfirmCardDelete}/>
 
-        <InfoTooltip isOpen={isInfoTooltipPopupOpen} isOk={true} onClose={closeAllPopups}/>
+        <InfoTooltip isOpen={isInfoTooltipPopupOpen} isOk={false} onClose={closeAllPopups}/>
       </div>
     </CurrentUserContext.Provider>
   );
