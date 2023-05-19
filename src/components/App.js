@@ -13,6 +13,7 @@ import ConfirmationPopup from "./ConfirmationPopup";
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRouter from "./ProtectedRouter";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(true);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
 
@@ -68,6 +70,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
     setSelectedCard(null);
     setCardToDelete(null);
   };
@@ -183,6 +186,8 @@ function App() {
 
         <ConfirmationPopup card={cardToDelete} isLoading={isLoading} onClose={closeAllPopups}
                            onConfirmCardDelete={handleConfirmCardDelete}/>
+
+        <InfoTooltip isOpen={isInfoTooltipPopupOpen} isOk={true} onClose={closeAllPopups}/>
       </div>
     </CurrentUserContext.Provider>
   );
