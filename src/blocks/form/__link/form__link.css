@@ -1,26 +1,27 @@
-.form__button {
+.form__link {
   display: block;
   width: 100%;
   min-height: 46px;
   padding: 0;
+  color: #fff;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
+  line-height: 46px;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
 }
 
-.form__button:hover {
+.form__link:hover {
   opacity: 0.8;
 }
 
 @media screen and (min-width: 468px) {
-  .form__button {
+  .form__link {
     min-height: 50px;
     font-size: 18px;
-    line-height: 22px;
+    line-height: 50px;
   }
 }

@@ -1,6 +1,7 @@
 import {useState} from "react";
 import * as auth from '../utils/auth';
 import {useForm} from "../hooks/useForm";
+import {Link} from "react-router-dom";
 
 const Register = ({name}) => {
 
@@ -32,7 +33,7 @@ const Register = ({name}) => {
 
       <div className="auth__buttons-container">
         <button className="form__button form__button_theme_dark" type="submit">Зарегистрироваться</button>
-        <button className="form__button form__button_theme_dark-link" type="button">Уже зарегистрированы? Войти</button>
+        <Link to='/sign-in' className="form__link">Уже зарегистрированы? Войти</Link>
       </div>
     </form>
   );

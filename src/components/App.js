@@ -151,7 +151,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header/>
+        <Header email={email}/>
         <Routes>
           <Route path="/" element={
             <ProtectedRouter element={Main}
