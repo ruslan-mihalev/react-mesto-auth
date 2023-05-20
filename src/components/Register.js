@@ -12,7 +12,7 @@ const Register = ({name}) => {
   };
 
   return (
-    <form className="auth" name={`${name}__form`} onSubmit={onSubmit}>
+    <form className="auth" name="register__form" onSubmit={onSubmit}>
 
       <div className="auth__fields-container">
         <h2 className="form__title form__title_theme_dark">Регистрация</h2>
