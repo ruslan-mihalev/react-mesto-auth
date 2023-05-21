@@ -170,6 +170,7 @@ function App() {
           <Route path="/sign-in" element={
             <Login/>
           }/>
+          <Route path="*" element={<Navigate to="/" replace={true}/>}/>
         </Routes>
 
         <Footer/>
