@@ -154,15 +154,18 @@ function App() {
         <Header email={email}/>
         <Routes>
           <Route path="/" element={
-            <ProtectedRouter element={Main}
-                             isLoggedIn={true}
-                             onEditAvatar={handleEditAvatarClick}
-                             onEditProfile={handleEditProfileClick}
-                             onAddPlace={handleAddPlaceClick}
-                             cards={cards}
-                             onCardClick={handleCardClick}
-                             onCardLike={handleCardLike}
-                             onCardDelete={handleCardDelete}/>
+            <>
+              <ProtectedRouter element={Main}
+                               isLoggedIn={true}
+                               onEditAvatar={handleEditAvatarClick}
+                               onEditProfile={handleEditProfileClick}
+                               onAddPlace={handleAddPlaceClick}
+                               cards={cards}
+                               onCardClick={handleCardClick}
+                               onCardLike={handleCardLike}
+                               onCardDelete={handleCardDelete}/>
+              <Footer/>
+            </>
           }/>
           <Route path="/sign-up" element={
             <Register/>
@@ -173,7 +176,6 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace={true}/>}/>
         </Routes>
 
-        <Footer/>
         <EditProfilePopup isOpen={isEditProfilePopupOpen} isLoading={isLoading} onClose={closeAllPopups}
                           onUpdateUser={handleUpdateUser}/>
 
