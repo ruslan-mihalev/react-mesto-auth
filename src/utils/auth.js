@@ -9,13 +9,10 @@ export const register = (email, password) => {
     body: JSON.stringify({email, password})
   })
     .then(response => {
-      try {
-        if (response.ok) {
-          return response.json();
-        }
-      } catch(err) {
-        return (err);
+      if (response.ok) {
+        return response.json();
       }
+      return Promise.reject(response);
     });
 };
 
@@ -28,13 +25,10 @@ export const authorize = (email, password) => {
     body: JSON.stringify({email, password})
   })
     .then(response => {
-      try {
-        if (response.ok) {
-          return response.json();
-        }
-      } catch(err) {
-        return (err);
+      if (response.ok) {
+        return response.json();
       }
+      return Promise.reject(response);
     });
 };
 
@@ -47,12 +41,9 @@ export const validateToken = (token) => {
     }
   })
     .then(response => {
-      try {
-        if (response.ok) {
-          return response.json();
-        }
-      } catch(err) {
-        return (err);
+      if (response.ok) {
+        return response.json();
       }
+      return Promise.reject(response);
     });
 }

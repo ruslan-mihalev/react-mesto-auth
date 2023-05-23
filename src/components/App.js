@@ -29,13 +29,11 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [isInfoTooltipPopupStyleSuccess, setIsInfoTooltipPopupStyleSuccess] = useState(false);
+  const [infoTooltipPopupMessage, setInfoTooltipPopupMessage] = useState('');
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
 
   const [isLoading, setIsLoading] = useState(false);
-
-  // Возможно нужно завязаться на наличие токена
-  const isLoggedIn = !!email;
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -48,28 +46,24 @@ function App() {
             navigate('/', {replace: true});
           }
         })
+        .catch(err => {
+          console.log(`Ошибка проверки токена: ${err}`);
+        })
     }
   }, [navigate]);
 
   useEffect(() => {
-    api.getUser()
-      .then(user => {
-        setCurrentUser(user);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }, []);
-
-  useEffect(() => {
-    api.getCards()
-      .then((initialCards) => {
-        setCards(initialCards);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, [currentUser]);
+    if (email) {
+      Promise.all([api.getUser(), api.getCards()])
+        .then(([user, initialCards]) => {
+          setCurrentUser(user);
+          setCards(initialCards);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+  }, [email]);
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -161,24 +155,41 @@ function App() {
       });
   }
 
-  function onRegister() {
-    navigate("/sign-in", {replace: true});
-    setIsInfoTooltipPopupStyleSuccess(true);
-    setIsInfoTooltipPopupOpen(true);
+  function handleRegister(email, password) {
+    auth.register(email, password)
+      .then(body => {
+        navigate("/sign-in", {replace: true});
+        // Покажем попап с подздравлением
+        setIsInfoTooltipPopupStyleSuccess(true);
+        setInfoTooltipPopupMessage('Вы успешно \nзарегистрировались!');
+        setIsInfoTooltipPopupOpen(true);
+      })
+      .catch(err => {
+        console.log(`Ошибка регистрации: ${err}`);
+        // Покажем попап с ошибкой
+        setIsInfoTooltipPopupStyleSuccess(false);
+        setInfoTooltipPopupMessage('Что-то пошло не так! \nПопробуйте ещё раз.');
+        setIsInfoTooltipPopupOpen(true);
+      });
   }
 
-  function onLogin(token, email) {
-    localStorage.setItem('token', token);
-    setEmail(email);
-    navigate("/", {replace: true});
+  function handleLogin(email, password) {
+    auth.authorize(email, password)
+      .then(body => {
+        localStorage.setItem('token', body.token);
+        setEmail(email);
+        navigate("/", {replace: true});
+      })
+      .catch(err => {
+        console.log(`Ошибка авторизации: ${err}`);
+        // Покажем попап с ошибкой
+        setIsInfoTooltipPopupStyleSuccess(false);
+        setInfoTooltipPopupMessage('Что-то пошло не так! \nПопробуйте ещё раз.');
+        setIsInfoTooltipPopupOpen(true);
+      });
   }
 
-  function onLoginError() {
-    setIsInfoTooltipPopupStyleSuccess(false);
-    setIsInfoTooltipPopupOpen(true);
-  }
-
-  function onSignOut() {
+  function handleSignOut() {
     localStorage.removeItem('token');
     setEmail('');
     navigate("/sign-in", {replace: true});
@@ -187,12 +198,12 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header email={email} onSignOut={onSignOut}/>
+        <Header email={email} onSignOut={handleSignOut}/>
         <Routes>
           <Route path="/" element={
             <>
               <ProtectedRouter element={Main}
-                               isLoggedIn={isLoggedIn}
+                               isLoggedIn={!!email}
                                onEditAvatar={handleEditAvatarClick}
                                onEditProfile={handleEditProfileClick}
                                onAddPlace={handleAddPlaceClick}
@@ -204,12 +215,12 @@ function App() {
             </>
           }/>
           <Route path="/sign-up" element={
-            <Register onRegister={onRegister}/>
+            <Register onRegister={handleRegister}/>
           }/>
           <Route path="/sign-in" element={
-            <Login onLogin={onLogin} onLoginError={onLoginError}/>
+            <Login onLogin={handleLogin} />
           }/>
-          <Route path="*" element={isLoggedIn ? <Navigate to="/" replace/> : <Navigate to="/sign-in" replace/>}/>
+          <Route path="*" element={!!email ? <Navigate to="/" replace/> : <Navigate to="/sign-in" replace/>}/>
         </Routes>
 
         <EditProfilePopup
@@ -248,6 +259,7 @@ function App() {
         <InfoTooltip
           isOpen={isInfoTooltipPopupOpen}
           isOk={isInfoTooltipPopupStyleSuccess}
+          message={infoTooltipPopupMessage}
           onClose={closeAllPopups}
         />
       </div>

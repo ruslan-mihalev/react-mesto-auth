@@ -1,8 +1,7 @@
 import usePopupClose from "../hooks/usePopupClose";
 
-const InfoTooltip = ({isOpen, isOk, onClose}) => {
+const InfoTooltip = ({isOpen, isOk, message, onClose}) => {
 
-  const text = isOk ? 'Вы успешно \nзарегистрировались!' : 'Что-то пошло не так! \nПопробуйте ещё раз.';
   const iconClass = isOk ? 'popup__icon_type_ok' : 'popup__icon_type_error';
 
   usePopupClose(isOpen, onClose);
@@ -13,7 +12,7 @@ const InfoTooltip = ({isOpen, isOk, onClose}) => {
         <button className="popup__close-button" type="button" aria-label="Закрыть окно" onClick={onClose}/>
         <div className="popup__info-container">
           <div className={`popup__icon ${iconClass}`}/>
-          <p className="popup__text">{text}</p>
+          <p className="popup__text">{message}</p>
         </div>
       </div>
     </div>

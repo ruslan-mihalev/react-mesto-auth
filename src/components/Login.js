@@ -1,23 +1,14 @@
-import * as auth from '../utils/auth';
 import {useForm} from "../hooks/useForm";
 
-const Login = ({onLogin, onLoginError}) => {
+const Login = ({onLogin}) => {
 
-  const {values, handleChange, setValues} = useForm({email: '', password: ''});
+  const {values, handleChange} = useForm({email: '', password: ''});
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     const {email, password} = values;
-    auth.authorize(email, password)
-      .then(body => {
-        setValues({email: '', password: ''});
-        onLogin(body.token, email);
-      })
-      .catch(err => {
-        onLoginError();
-        console.log(`Ошибка авторизации: ${err}`);
-      });
+    onLogin(email, password);
   };
 
   return (
