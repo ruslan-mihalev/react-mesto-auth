@@ -1,4 +1,3 @@
-import {useState} from "react";
 import * as auth from '../utils/auth';
 import {useForm} from "../hooks/useForm";
 import {Link} from "react-router-dom";
@@ -35,14 +34,14 @@ const Register = ({onRegister}) => {
 
         <input className="form__input form__input_theme_dark form__input_target_info" id="input-password"
                name="password"
-               required type="password" placeholder="Ссылка на картинку"
+               required type="password" placeholder="Пароль"
                value={values.password} onChange={handleChange}/>
         <span className="form__input-error form__input-error_target_info input-card-image-link-error"/>
       </div>
 
       <div className="auth__buttons-container">
-        <button className="form__button form__button_theme_dark" type="submit">Зарегистрироваться</button>
-        <Link to='/sign-in' className="form__link">Уже зарегистрированы? Войти</Link>
+        <button className="form__button form__button_theme_dark auth__button" type="submit">Зарегистрироваться</button>
+        <Link to='/sign-in' className="form__link auth__link">Уже зарегистрированы? Войти</Link>
       </div>
     </form>
   );

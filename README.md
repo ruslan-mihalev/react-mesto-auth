@@ -2,7 +2,7 @@
 ### Предназначение
 Аттесстационный проект промежуточных спринтов курса [Web-разработчик](https://practicum.yandex.ru/web/).
 
-[По этой ссылке вы можете ознакомиться с результатом работы на Github Pages](https://ruslan-mihalev.github.io/mesto-react/)
+[По этой ссылке вы можете ознакомиться с результатом работы на Github Pages](https://ruslan-mihalev.github.io/react-mesto-auth/)
 
 **Фукционал**
 * Редактирование информации в профиле пользователя
@@ -37,6 +37,9 @@
 * JavaScript
 * React
 * React Context
+* fetch
+* localStorage
+* JWT
 
 Для сборки проекта использовано окружение NodeJS, пакетный менеджер NPM и сборщик Webpack.
 Если хотите так-же - привожу список команд установки пакетов ниже:

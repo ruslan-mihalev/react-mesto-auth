@@ -3,9 +3,10 @@ import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
 function Card({card, onCardClick, onCardLike, onCardDelete}) {
 
-  const { _id: currentUserId } = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
   const {name, link, likes, owner: {_id: ownerId}} = card;
 
+  const currentUserId = currentUser?._id;
   const allLikesCount = likes.length;
   const hasLikes = allLikesCount > 0;
   const isLikedByCurrentUser = likes.some(like => like._id === currentUserId);

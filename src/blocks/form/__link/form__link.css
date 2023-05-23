@@ -1,13 +1,12 @@
 .form__link {
   display: block;
   width: 100%;
-  min-height: 46px;
   padding: 0;
   color: #fff;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 46px;
+  line-height: 17px;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -20,8 +19,7 @@
 
 @media screen and (min-width: 468px) {
   .form__link {
-    min-height: 50px;
-    font-size: 18px;
-    line-height: 50px;
+    font-size: 14px;
+    line-height: 17px;
   }
 }

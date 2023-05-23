@@ -38,8 +38,18 @@ function App() {
   const isLoggedIn = !!email;
 
   useEffect(() => {
-    tokenCheck();
-  }, []);
+    if (localStorage.getItem('token')) {
+      const token = localStorage.getItem('token');
+      auth.validateToken(token)
+        .then(body => {
+          const email = body.data.email;
+          if (email) {
+            setEmail(email);
+            navigate('/', {replace: true});
+          }
+        })
+    }
+  }, [navigate]);
 
   useEffect(() => {
     api.getUser()
@@ -52,15 +62,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
-      api.getCards()
-        .then((initialCards) => {
-          setCards(initialCards);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
+    api.getCards()
+      .then((initialCards) => {
+        setCards(initialCards);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, [currentUser]);
 
   const handleEditAvatarClick = () => {
@@ -89,7 +97,7 @@ function App() {
   };
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(like => like._id === currentUser._id);
+    const isLiked = card.likes.some(like => like._id === currentUser?._id);
     api.like(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -153,20 +161,6 @@ function App() {
       });
   }
 
-  function tokenCheck() {
-    if (localStorage.getItem('token')) {
-      const token = localStorage.getItem('token');
-      auth.validateToken(token)
-        .then(body => {
-          const email = body.data.email;
-          if (email) {
-            setEmail(email);
-            navigate('/', {replace: true});
-          }
-        })
-    }
-  }
-
   function onRegister() {
     navigate("/sign-in", {replace: true});
     setIsInfoTooltipPopupStyleSuccess(true);
@@ -218,21 +212,44 @@ function App() {
           <Route path="*" element={isLoggedIn ? <Navigate to="/" replace/> : <Navigate to="/sign-in" replace/>}/>
         </Routes>
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} isLoading={isLoading} onClose={closeAllPopups}
-                          onUpdateUser={handleUpdateUser}/>
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          isLoading={isLoading}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} isLoading={isLoading} onClose={closeAllPopups}
-                       onAddPlace={handleAddPlaceSubmit}/>
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          isLoading={isLoading}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} isLoading={isLoading} onClose={closeAllPopups}
-                         onUpdateAvatar={handleUpdateAvatar}/>
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          isLoading={isLoading}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+        />
 
-        <ConfirmationPopup card={cardToDelete} isLoading={isLoading} onClose={closeAllPopups}
-                           onConfirmCardDelete={handleConfirmCardDelete}/>
+        <ConfirmationPopup
+          card={cardToDelete}
+          isLoading={isLoading}
+          onClose={closeAllPopups}
+          onConfirmCardDelete={handleConfirmCardDelete}
+        />
 
-        <InfoTooltip isOpen={isInfoTooltipPopupOpen} isOk={isInfoTooltipPopupStyleSuccess} onClose={closeAllPopups}/>
+        <InfoTooltip
+          isOpen={isInfoTooltipPopupOpen}
+          isOk={isInfoTooltipPopupStyleSuccess}
+          onClose={closeAllPopups}
+        />
       </div>
     </CurrentUserContext.Provider>
   );
