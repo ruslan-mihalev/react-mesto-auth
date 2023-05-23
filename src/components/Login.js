@@ -2,13 +2,23 @@ import {useState} from "react";
 import * as auth from '../utils/auth';
 import {useForm} from "../hooks/useForm";
 
-const Login = () => {
+const Login = ({onLogin, onLoginError}) => {
 
-  const {values, handleChange, setValues} = useForm({'email': '', 'password': ''});
+  const {values, handleChange, setValues} = useForm({email: '', password: ''});
 
   const onSubmit = (e) => {
     e.preventDefault();
 
+    const {email, password} = values;
+    auth.authorize(email, password)
+      .then(body => {
+        setValues({email: '', password: ''});
+        onLogin(body.token, email);
+      })
+      .catch(err => {
+        onLoginError();
+        console.log(`Ошибка авторизации: ${err}`);
+      });
   };
 
   return (
@@ -31,7 +41,7 @@ const Login = () => {
       </div>
 
       <div className="auth__buttons-container">
-        <button className="form__button form__button_theme_dark" type="submit">Зарегистрироваться</button>
+        <button className="form__button form__button_theme_dark" type="submit">Войти</button>
       </div>
     </form>
   );

@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {NavLink} from "react-router-dom";
 
-function Header({isLogin, isRegister, email, onSignOut}) {
+function Header({email, onSignOut}) {
 
   // Малое скрываемое меню присутствует в малом варианте разметки только в случае наличия email
   const hasMenu = !!email;
@@ -21,7 +21,6 @@ function Header({isLogin, isRegister, email, onSignOut}) {
     <header className="header">
       <div className='header__container'>
         <div className="header__logo"/>
-
         {
           hasMenu ? (
             <button className={menuButtonClassName} type='button' aria-label={menuButtonAriaLabel}
@@ -38,10 +37,12 @@ function Header({isLogin, isRegister, email, onSignOut}) {
       </div>
       {
         hasMenu
-          ? (<div className={menuClassName}>
-            <p className='menu__text'>{email}</p>
-            <button className='menu__button' onClick={onSignOut}>Выйти</button>
-          </div>)
+          ? (
+            <div className={menuClassName}>
+              <p className='menu__text'>{email}</p>
+              <button className='menu__button' onClick={onSignOut}>Выйти</button>
+            </div>
+          )
           : null}
     </header>
   );

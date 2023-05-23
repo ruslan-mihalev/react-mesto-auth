@@ -3,13 +3,22 @@ import * as auth from '../utils/auth';
 import {useForm} from "../hooks/useForm";
 import {Link} from "react-router-dom";
 
-const Register = ({name}) => {
+const Register = ({onRegister}) => {
 
   const {values, handleChange, setValues} = useForm({'email': '', 'password': ''});
 
   const onSubmit = (e) => {
     e.preventDefault();
 
+    const {email, password} = values;
+    auth.register(email, password)
+      .then(body => {
+        setValues({email: '', password: ''});
+        onRegister();
+      })
+      .catch(err => {
+        console.log(`Ошибка регистрации: ${err}`);
+      });
   };
 
   return (
